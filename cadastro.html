@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de login</title>
+    <link rel="stylesheet" href="_css/estilo.css">
+</head>
+<body>
+    <div class="container">
+        <div class="panel">
+            <img src="_img/logo.png" alt="Tetris" class="center">
+            <form action="" method="post">
+                <h2>Tela de cadastro</h2>
+                <p>
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" name="nome" placeholder="José da Silva" required>
+                </p>
+                <p>
+                    <label for="dataNasc">Data de Nascimento</label>
+                    <input type="date" name="dataNasc" required>
+                </p>
+                <p>
+                    <label for="cpf">CPF</label>
+                    <input type="text" name="cpf" placeholder="000.000.000-00" required>
+                </p>
+                <p>
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" name="telefone" placeholder="(00)90000-0000"  pattern="([0-9]{2})-[0-9]{5}-[0-9]{4}" required>
+                </p>
+                <p>
+                    <label for="usuario">Usuário (Deve ser único)</label>
+                    <input type="text" name="usuario" placeholder="uniqueUser" required>
+                </p>
+                <p>
+                    <label for="senha">Senha</label>
+                    <input type="password" name="senha" placeholder="********" required>
+                </p>
+                <p>
+                    <label for="confirmarSenha">Confirme sua Senha</label>
+                    <input type="password" name="confirmarSenha" placeholder="********" required>
+                </p>
+                <input type="submit" value="Cadastrar">
+            </form>
+            <button class="link">
+                <a href="index.html">Fazer Login</a>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
