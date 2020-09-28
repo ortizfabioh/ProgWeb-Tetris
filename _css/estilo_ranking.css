@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  font: arial, serif;
+  font-size: 100%;
+}
+
+h1 {
+  text-align: center;
+  color: #066a75;
+  font-size: 300%;
+  margin-bottom: 30px;
+  margin-top: 50px;
+}
+
+body {
+  background-color: #ecf0f5;
+}
+
+.content {
+  background-color: #ffffff;
+  border: 3px solid #8c8c8c;
+  border-radius: 5px;
+  box-shadow: 0px 1px 4px 0px inset;
+  width: 1000px;
+  height: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.user {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  border: 1px solid #8c8c8c;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 1px inset;
+  font-size: 225%;
+  background-color: #dddbff;
+  float: left;
+}
+
+.colocacao {
+  clear: both;
+  margin-left: 330px;
+  margin-bottom: auto;
+}
+
+#nome {
+  color: #000000;
+  margin-right: 5px;
+  margin-left: 5px;
+  padding-left: auto;
+}
+
+#pos {
+  margin-right: 5px;
+  margin-left: 5px;
+  padding-left: auto;
+}
+
+#pont {
+  margin-right: 5px;
+  margin-left: 5px;
+  padding-left: auto;
+}
