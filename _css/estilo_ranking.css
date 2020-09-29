@@ -9,7 +9,8 @@ h1 {
   color: #066a75;
   font-size: 300%;
   margin-bottom: 30px;
-  margin-top: 50px;
+  margin-top: 20px;
+  font-style: bold;
 }
 
 body {
@@ -22,7 +23,7 @@ body {
   border-radius: 5px;
   box-shadow: 0px 1px 4px 0px inset;
   width: 1000px;
-  height: 500px;
+  height: 475px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -63,4 +64,17 @@ body {
   margin-right: 5px;
   margin-left: 5px;
   padding-left: auto;
+}
+
+#botao {
+  width: 150px;
+  height: 30px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  margin-left: -75px;
+  margin-top: 15px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 3px 1px inset;
+  border: 1px solid #8c8c8c;
 }
