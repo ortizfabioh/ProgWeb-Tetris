@@ -1,0 +1,67 @@
+*{
+  font-family: "Arial", Arial, sans-serif;
+}
+
+body {
+  background-color: #ecf0f5;
+  width: 200px;
+}
+
+h2 {
+    text-align: center;
+    color: #066a75;
+}
+
+p.jogo {
+ background-color: rgb(89, 106, 255);
+ border: black;
+ padding: 8px 24px;
+ cursor: pointer;
+ height: 100px;
+ width: 50px;
+
+}
+
+p.caixas {
+    background-color: rgb(225, 245, 252);
+    border: 2px solid rgb(89, 106, 255);
+    padding: 8px 24px;
+    cursor: pointer;
+    width: 24px;
+    height: 10px;
+    align-items: right;
+}
+
+.sair {
+    border-radius: 5px;
+    border: black; 
+    padding: 14px 183px; 
+    cursor: pointer;
+    background-color: #eb0000;
+}
+.sair a {
+    color: white; 
+}
+.sair:hover {
+    background-color: #eb0000;
+}
+
+.edit {
+   border-radius: 5px;
+    border: black; 
+    padding: 14px 42px; 
+    cursor: pointer;
+    background-color: #009e0d;
+    background-position: center;
+    margin: 5px;
+}
+
+.edit a{
+  color: white;
+}
+
+.edit:hover {
+  background-color: #009e0d;
+}
+
+
