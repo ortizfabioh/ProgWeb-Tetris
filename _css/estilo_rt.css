@@ -8,28 +8,61 @@ body {
 }
 
 h2 {
-    text-align: center;
     color: #066a75;
+margin-left:650px;
 }
+.center {
+margin-left:550px;
+}
+.quit {
+margin-left:430px;
+}
+.info {
+margin-left: 650px;
+margin-top:-83px;
+}
+.ranking {
+margin-left: 150px;
+margin-top:200px;
+}
+#nome {
+  color: #000000;
+  margin-top:-10px;
+  margin-left:-20px;
+  padding-left: auto;
 
-p.jogo {
+}
+.content {
+  background-color: #ecf0f5;
+width:400px;
+height:350px;
+margin-left:700px;
+margin-right:700px;
+margin-top:-520px;
+}
+.jogo {
  background-color: rgb(89, 106, 255);
  border: black;
  padding: 8px 24px;
  cursor: pointer;
- height: 100px;
- width: 50px;
-
+ height: 500px;
+ width: 500px;
+margin-left: 100px;
+  margin-right: 100px;
+position:right;
 }
 
-p.caixas {
+.caixas {
     background-color: rgb(225, 245, 252);
     border: 2px solid rgb(89, 106, 255);
     padding: 8px 24px;
     cursor: pointer;
-    width: 24px;
-    height: 10px;
-    align-items: right;
+    width: 100px;
+    height: 20px;
+margin-left: 150px;
+  margin-right: 150px;
+margin-top:35px;
+text-align:center;
 }
 
 .sair {
@@ -49,7 +82,7 @@ p.caixas {
 .edit {
    border-radius: 5px;
     border: black; 
-    padding: 14px 42px; 
+    padding: 22px 200px; 
     cursor: pointer;
     background-color: #009e0d;
     background-position: center;
@@ -63,5 +96,8 @@ p.caixas {
 .edit:hover {
   background-color: #009e0d;
 }
+
+
+
 
 
