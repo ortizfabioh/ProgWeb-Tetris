@@ -5,35 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de edição</title>
     <link rel="stylesheet" href="_css/estilo.css">
+    <link rel="stylesheet" href="_css/form.css">
+    <link rel="stylesheet" href="_css/navbar.css">
 </head>
 <body>
+    <header>
+        <div class="navbar">
+            <a href="rt.html"><img src="_img/logo.png" alt="Tetris" class="img"></a>
+            <div class="dropdown">
+                <button class="dropbtn">NomeJogador
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="edicao.html">Editar Perfil</a>
+                    <a href="#">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
     <div class="container">
         <div class="panel">
-            <img src="_img/logo.png" alt="Tetris" class="center">
             <form action="" method="post">
                 <h2>Tela de Edição</h2>
-                <p>
-                    <label for="nome">Nome Completo</label>
-                    <input type="text" name="nome" placeholder="José da Silva" required>
-                </p>
-                <p>
-                    <label for="dataNasc">Data de Nascimento</label>
-                    <input type="date" name="dataNasc" disabled>
-                </p>
-                <p>
-                    <label for="cpf">CPF</label>
-                    <input type="text" name="cpf" disabled>
-                </p>
-                <p>
-                    <label for="telefone">Telefone</label>
-                    <input type="tel" name="telefone" placeholder="(00)90000-0000"  pattern="([0-9]{2})-[0-9]{5}-[0-9]{4}" required>
-                </p>
                 <p>
                     <label for="usuario">Usuário</label>
                     <input type="text" name="usuario"disabled>
                 </p>
                 <p>
-                    <label for="senha">Senha</label>
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" name="nome" placeholder="José da Silva" required>
+                </p>
+                <p>
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" name="telefone" placeholder="(00)90000-0000"  pattern="([0-9]{2})-[0-9]{5}-[0-9]{4}" required>
+                </p>
+                
+                <p>
+                    <label for="senha">Nova Senha</label>
                     <input type="password" name="senha" placeholder="********" required>
                 </p>
                 <p>

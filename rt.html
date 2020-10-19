@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolling Tetris</title>
+    <link rel="stylesheet" href="_css/estilo.css">
+    <link rel="stylesheet" href="_css/navbar.css">
+    <link rel="stylesheet" href="_css/tetris.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="rt.html"><img src="_img/logo.png" alt="Tetris" class="img"></a>
+
+            <div class="dropdown">
+                <button class="dropbtn">Alterar Tamanho (Altura x Largura)</button>
+                <div class="dropdown-content">
+                    <a href="#">20 x 10</a>
+                    <a href="#">44 x 22</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn">NomeJogador</button>
+                <div class="dropdown-content">
+                    <a href="edicao.html">Editar Perfil</a>
+                    <a href="#">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div id="tetris" class="jogo maior"></div>
+    <div class="info">
+            <span>Tempo de partida:</span>
+            <div id="tempoPartida" class="caixa">00:00</div>
+
+            <span>Pontuação:</span>
+            <div id="pontuacao" class="caixa">0</div>
+
+            <span>Linhas eliminadas:</span>
+            <div id="linhasEliminadas" class="caixa">0</div>
+
+            <span>Dificuldade:</span>
+            <div id="dificuldade" class="caixa">1</div>
+
+            <span>Ranking do jogador:<br/></span>
+            <span>(jogador - pontuação - nível - tempo)</span>
+            <div id="rankJogador" class="ranking">
+                <div id="1" class="rank">jogador - 1000000 - 10 - 90:00</div>
+                <div id="2" class="rank">jogador - 515246 - 8 - 82:35</div>
+            </div>
+    </div>
+
+</body>
+</html>
