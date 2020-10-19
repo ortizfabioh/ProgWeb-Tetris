@@ -8,15 +8,15 @@
 }
 
 .menor {
-    /* 20 x 10 celulas de 20px + bordas de 1px entre celulas */
-    height: 418px;
-    width: 208px;
+    /* 20 x 10 celulas de 20px */
+    height: 400px;
+    width: 200px;
 }
 
 .maior {
-    /* 44 x 22 celulas de 20px + bordas de 1px entre celulas */
-    height: 922px;
-    width: 460px;
+    /* 44 x 22 celulas de 20px */
+    height: 880px;
+    width: 440px;
 }
 
 .jogo {
