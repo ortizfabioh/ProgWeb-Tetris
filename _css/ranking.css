@@ -6,10 +6,10 @@
 
 h1 {
   text-align: center;
-  color: #066a75;
+  color: #000000;
   font-size: 300%;
   margin-bottom: 30px;
-  margin-top: 20px;
+  margin-top: 3%;
   font-style: bold;
 }
 
@@ -27,6 +27,7 @@ body {
   height: 550px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 4%;
 }
 
 .user {
@@ -37,15 +38,15 @@ body {
   border: 1px solid #8c8c8c;
   border-radius: 5px;
   box-shadow: 0px 0px 5px 1px inset;
-  font-size: 225%;
+  font-size: 155%;
   background-color: #dddbff;
   float: left;
 }
 
 .colocacao {
   clear: both;
-  margin-left: 330px;
   margin-bottom: auto;
+  height: 10px;
 }
 
 #nome {
@@ -78,4 +79,19 @@ body {
   border-radius: 5px;
   box-shadow: 0px 0px 3px 1px inset;
   border: 1px solid #8c8c8c;
+}
+
+.primeiros {
+  margin-left: 10%;
+  margin-right: 2%;
+  float: left;
+}
+
+.ultimos {
+  margin-left: 20%;
+  float: left;
+}
+
+.jogador {
+  margin-left: 35%;
 }
