@@ -4,7 +4,6 @@ h1 {
   font-size: 300%;
   margin-bottom: 1%;
   margin-top: 1%;
-  font-style: bold;
 }
 
 .content {
@@ -37,23 +36,20 @@ h1 {
   height: 10px;
 }
 
-#nome {
+.nome {
   color: #000000;
   margin-right: 5px;
   margin-left: 5px;
-  padding-left: auto;
 }
 
-#pos {
+.pos {
   margin-right: 5px;
   margin-left: 5px;
-  padding-left: auto;
 }
 
-#pont {
+.pont {
   margin-right: 5px;
   margin-left: 5px;
-  padding-left: auto;
 }
 
 #botao {
