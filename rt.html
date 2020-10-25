@@ -13,10 +13,10 @@
         <div class="navbar">
             <a href="rt.html"><img src="_img/logo.png" alt="Tetris" class="img"></a>
             <div class="dropdown">
-                <button class="dropbtn">Alterar Tamanho (Altura x Largura)</button>
+                <button class="dropbtn">Selecione o tamanho do tetris (Altura x Largura)</button>
                 <div class="dropdown-content">
-                    <a href="#">20 x 10</a>
-                    <a href="#">44 x 22</a>
+                    <a href="#" onclick="trocarMaiorMenor()">20 x 10</a>
+                    <a href="#" onclick="trocarMenorMaior()">44 x 22</a>
                 </div>
             </div>
             
@@ -30,21 +30,22 @@
             </div>
         </div>
     </header>
-    
-    <div id="tetris" class="jogo maior"></div>
+    <div class="tabuleiro">
+        <div id="tetris" class="menor"></div>
+    </div>
     <div class="info">
-            <span>Tempo de partida:</span>
-            <div id="tempoPartida" class="caixa">00:00</div>
-
-            <span>Pontuação:</span>
+        <span>Tempo de partida:</span>
+        <div id="tempoPartida" class="caixa">00:00</div>
+        
+        <span>Pontuação:</span>
             <div id="pontuacao" class="caixa">0</div>
-
+            
             <span>Linhas eliminadas:</span>
             <div id="linhasEliminadas" class="caixa">0</div>
-
+            
             <span>Dificuldade:</span>
             <div id="dificuldade" class="caixa">1</div>
-
+            
             <span>Ranking do jogador:<br/></span>
             <span>(jogador - pontuação - nível - tempo)</span>
             <div id="rankJogador" class="ranking">
@@ -53,5 +54,7 @@
             </div>
     </div>
 
+    <script src="_js/jogo.js"></script>
+    <script src="_js/funcoes.js"></script>
 </body>
 </html>
