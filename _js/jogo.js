@@ -15,7 +15,7 @@ function gerarTab() {
         for(var j=1; j<=largura; j++) {
             var celula = document.createElement("div");
             celula.setAttribute("class", tamCelula);
-            var id= (i).toString()+"_"+j;
+            var id= (i).toString()+"_"+(j).toString();
             celula.setAttribute("id", id)
             partida.appendChild(celula);
         }
