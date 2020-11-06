@@ -1,21 +1,13 @@
-.tabuleiro, .info {
-    padding: 0;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    border: 7px solid blue;
-    border-radius: 2%;
-}
-
 .menor {
-    /* 20 x 10 celulas de 30px */
-    height: 619px;
-    width: 310px;
+    /* 20 x 10 celulas de 20px + bordas 19 x 10*/
+    height: 419px;
+    width: 210px;
 }
 
 .maior {
-    /* 44 x 22 celulas de 15px */
-    height: 702px;
-    width: 352px;
+    /* 44 x 22 celulas de 10px + bordas 42 x 22 */
+    height: 482px;
+    width: 242px;
 }
 
 .celulaMaior, .celulaMenor {
@@ -27,26 +19,46 @@
 }
 
 .celulaMenor {
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
 }
 
 .celulaMaior {
-    height: 15px;
-    width: 15px;
+    height: 10px;
+    width: 10px;
+}
+
+.tabuleiro, .info {
+    padding: 0;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    border: 7px solid blue;
+    border-radius: 2%;
 }
 
 .tabuleiro {
     float: left;
-    margin-left: 20%;
+    margin-left: 3%;
 }
 
 .info {
-    float: right;
-    margin-right: 20%;
+    float: left;
+    margin-left: 6%;
     width: 20%;
-    height: 600px;
+    height: 400px;
     background-color:  rgb(0, 0, 255);;
+}
+
+.botoes {
+    width: 7%;
+    height: 100px;
+    margin-top: 5%;
+    margin-left: 30%;
+    float: left;
+}
+
+.botoes button {
+    width: 100%;
 }
 
 .caixa, .ranking {
@@ -65,7 +77,7 @@
 }
 
 .ranking {
-    height: 300px;
+    height: 100px;
 }
 
 span {
