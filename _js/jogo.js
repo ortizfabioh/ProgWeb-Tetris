@@ -1,23 +1,76 @@
-window.onload = gerarTab();
+let tabuleiro = [];
+const canvas = document.getElementById('tetris');
+TAMANHOBLOCO = 20;
+VAZIO = "BLACK";
+
+const cores = [null, "purple", "yellow", "orange", "blue", "cyan", "green", "red"];
+function pecas(tipo) {
+    if(type==="t"){
+        return [
+            [0,0,0],
+            [1,1,1],
+            [0,1,0]
+        ];
+    }
+    else if(type==="o"){
+        return [
+            [2,2],
+            [2,2]
+        ];
+    }
+    else if(type==="l"){
+        return [
+            [0,3,0],
+            [0,3,0],
+            [0,3,3]
+        ];
+    }
+    else if(type==="j"){
+        return [
+            [0,4,0],
+            [0,4,0],
+            [4,4,0]
+        ];
+    }
+    else if(type==="i"){
+        return [
+            [0,5,0,0],
+            [0,5,0,0],
+            [0,5,0,0],
+            [0,5,0,0]
+        ];
+    }
+    else if(type==="s"){
+        return [
+            [0,0,0],
+            [6,0,6],
+            [6,6,6]
+        ];
+    }
+    else if(type==="z"){
+        return [
+            [7]
+        ];
+    }
+}
+
 
 function gerarTab() {
-    var tetris = document.getElementById("tetris");
-    
-    var altura = (tetris.className == "menor") ? 20 : 44;
-    var largura = (tetris.className == "menor") ? 10 : 22;
-    var tamCelula = (tetris.className == "menor") ? "celulaMenor" : "celulaMaior";
+    TAMANHOBLOCO = 20;
+    canvas.height = 400;
+    canvas.width = 200;
+    canvas.
+    LINHA = Math.floor(canvas.height / TAMANHOBLOCO);
+    COLUNA = Math.floor(canvas.width / TAMANHOBLOCO);
 
-    var partida = document.createElement("div");
-    partida.setAttribute("id", "partida")
-    tetris.appendChild(partida);
-
-    for(var i=1; i<=altura; i++) {
-        for(var j=1; j<=largura; j++) {
-            var celula = document.createElement("div");
-            celula.setAttribute("class", tamCelula);
-            var id= (i).toString()+"_"+(j).toString();
-            celula.setAttribute("id", id)
-            partida.appendChild(celula);
+    for (let l = 0; l < LINHA; l++) {
+        tabuleiro[l] = [];
+        for (let c = 0; c < COLUNA; c++) {
+            tabuleiro[l][c] = "BLACK";
         }
     }
 }
+
+context.clearRect(0,0,canvas.width,canvas.height);
+		context.fillStyle="#000000";
+		context.fillRect(0,0,canvas.width,canvas.height);

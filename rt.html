@@ -15,8 +15,8 @@
             <div class="dropdown">
                 <button class="dropbtn">Selecione o tamanho do tetris (Altura x Largura)</button>
                 <div class="dropdown-content">
-                    <a href="#" onclick="trocarMaiorMenor()">20 x 10</a>
-                    <a href="#" onclick="trocarMenorMaior()">44 x 22</a>
+                    <a href="#" onclick="alterarTamanho()">20 x 10</a>
+                    <a href="#" onclick="alterarTamanho()">44 x 22</a>
                 </div>
             </div>
             
@@ -42,7 +42,7 @@
         </p>
     </div>
     <div class="tabuleiro">
-        <div id="tetris" class="menor"></div>
+        <canvas id="tetris" height="400" width="200"></canvas>
     </div>
 
 
