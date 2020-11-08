@@ -1,76 +1,102 @@
-let tabuleiro = [];
+let tabuleiro = [];  // Criando o tabuleiro do Tetris
+
 const canvas = document.getElementById('tetris');
-TAMANHOBLOCO = 20;
-VAZIO = "BLACK";
+const context = canvas.getContext("2d");
+const redimensa0 = document.getElementById("redimensao");
 
-const cores = [null, "purple", "yellow", "orange", "blue", "cyan", "green", "red"];
-function pecas(tipo) {
-    if(type==="t"){
-        return [
-            [0,0,0],
-            [1,1,1],
-            [0,1,0]
-        ];
-    }
-    else if(type==="o"){
-        return [
-            [2,2],
-            [2,2]
-        ];
-    }
-    else if(type==="l"){
-        return [
-            [0,3,0],
-            [0,3,0],
-            [0,3,3]
-        ];
-    }
-    else if(type==="j"){
-        return [
-            [0,4,0],
-            [0,4,0],
-            [4,4,0]
-        ];
-    }
-    else if(type==="i"){
-        return [
-            [0,5,0,0],
-            [0,5,0,0],
-            [0,5,0,0],
-            [0,5,0,0]
-        ];
-    }
-    else if(type==="s"){
-        return [
-            [0,0,0],
-            [6,0,6],
-            [6,6,6]
-        ];
-    }
-    else if(type==="z"){
-        return [
-            [7]
-        ];
-    }
-}
+let tempoPartida = document.getElementById("tempoPartida");
+let pontuacao = document.getElementById("pontuacao");
+let linhasEliminadas = document.getElementById("linhasEliminadas");
+let dificuldade = document.getElementById("dificuldade");
 
+// TAMANHO PADRÃO INICIAL (20x10)
+TAMANHOBLOCO = 20;  // Tamanho de cada bloquinho
+canvas.height = 400;
+canvas.width = 200;
+window.onload = gerarTab();  // Gerar tabuleiro ao iniciar a página
 
-function gerarTab() {
-    TAMANHOBLOCO = 20;
-    canvas.height = 400;
-    canvas.width = 200;
-    canvas.
+function gerarTab() {  // só poderá ser chamado se a partida não estiver em andamento
     LINHA = Math.floor(canvas.height / TAMANHOBLOCO);
     COLUNA = Math.floor(canvas.width / TAMANHOBLOCO);
 
-    for (let l = 0; l < LINHA; l++) {
+    // Gerando cada bloquinho
+    for (let l=0; l<LINHA; l++) {
         tabuleiro[l] = [];
+        for (let c=0; c<COLUNA; c++) {
+            tabuleiro[l][c] = "Black";  // Criando blocos vazios
+        }
+    }
+
+    // Adicionando cor e borda aos bloquinhos
+    for (let l = 0; l < LINHA; l++) {
         for (let c = 0; c < COLUNA; c++) {
-            tabuleiro[l][c] = "BLACK";
+            desenharBloco(c, l, "black", context);
         }
     }
 }
 
-context.clearRect(0,0,canvas.width,canvas.height);
-		context.fillStyle="#000000";
-		context.fillRect(0,0,canvas.width,canvas.height);
+function alterarTamanho() {
+    if (TAMANHOBLOCO === 20 && canvas.width === 200 && canvas.height === 400) {
+        TAMANHOBLOCO = 10;
+        canvas.width = 220;
+        canvas.height = 420;
+
+        redimensao.innerHTML = "Mudar para 20 x 10";
+        
+        gerarTab();
+    } else {
+        TAMANHOBLOCO = 20;
+        canvas.width = 200;
+        canvas.height = 400;
+        
+        redimensao.innerHTML = "Mudar para 44 x 22";
+
+        gerarTab();
+    }
+}
+
+// função pra desenhar cada bloquinho (é usado para desenhar inclusive os blocos com peças)
+function desenharBloco(col, lin, corBloco, context) {
+    context.fillStyle = corBloco;
+    context.fillRect(col * TAMANHOBLOCO, lin * TAMANHOBLOCO, TAMANHOBLOCO, TAMANHOBLOCO);
+    context.strokeStyle = "#696969"; // Cor das bordas do canvas
+    context.strokeRect(col * TAMANHOBLOCO, lin * TAMANHOBLOCO, TAMANHOBLOCO, TAMANHOBLOCO);
+}
+
+
+/* ******************************************************
+***** GERAR ASSETS PARA O JOGO (PECAS E MOVIMENTOS) *****
+****************************************************** */
+
+// criando os formatos das peças  
+const formatoPecas = [
+    [
+        1,1,1,1
+    ],
+    [
+        1,1,0,0,
+        1,1
+    ],
+    [
+        1,1,1,0,
+        1
+    ],
+    [
+        1,1,1,0,
+        0,0,1
+    ],
+    [
+        0,1,0,0,
+        1,1,1
+    ],
+    [
+        1,0,1,0,
+        1,1,1
+    ],
+    [
+        1,0,0,0
+    ]
+];
+
+// Os índices das cores são os mesmos dos formatos
+const coresPecas = ["cyan", "yellow", "orange", "blue", "purple", "green", "red"];
