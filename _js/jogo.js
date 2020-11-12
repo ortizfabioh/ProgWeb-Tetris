@@ -1,3 +1,7 @@
+/*
+Peça chega ao fim, mas o tick extra pra cair no else não executa, então não surge a próx peça
+*/
+
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext("2d");
 
@@ -37,12 +41,7 @@ let dificuldade = document.getElementById("dificuldade");
 function gerarTab() {  // Função que cria o tabuleiro
     criarMatrizTab();
 
-    // Adicionando cor e borda aos bloquinhos
-    for(let l=0; l<LINHAS; l++) {
-        for(let c=0; c<COLUNAS; c++) {
-            desenharBloco(c, l, "black", context);
-        }
-    }
+    desenharTabVazio(LINHAS, COLUNAS, context);
 }
 
 function criarMatrizTab() {  // Função que cria a matriz vazia do tabuleiro
@@ -90,27 +89,27 @@ const Pecas = {  // Informações sobre formato e cor das peças
             1,1,1,1
         ],
         [
-            1,1,0,0,
-            1,1
+            2,2,0,0,
+            2,2
         ],
         [
-            1,1,1,0,
-            1
+            3,3,3,0,
+            3
         ],
         [
-            1,1,1,0,
-            0,0,1
+            4,4,4,0,
+            0,0,4
         ],
         [
-            0,1,0,0,
-            1,1,1
+            0,5,0,0,
+            5,5,5
         ],
         [
-            1,0,1,0,
-            1,1,1
+            6,0,6,0,
+            6,6,6
         ],
         [
-            1,0,0,0
+            7
         ]
     ],
     cores: [
@@ -130,8 +129,8 @@ function desenharPeca() {  // Função q será chamada a cada vez que a peça de
 
     for(let x=0; x<COLUNAS; ++x) {
         for(let y=0; y<LINHAS; ++y) {
-            if(tabuleiro[y][x]) {
-                desenharBloco(x, y, Pecas.cores[tabuleiro[y][x] - 1], context);
+            if(tabuleiro[y][x] == 0) {
+                desenharBloco(x, y, "Black", context);
             }
         }
     }
@@ -139,10 +138,43 @@ function desenharPeca() {  // Função q será chamada a cada vez que a peça de
     for(let y=0; y<4; ++y) {
         for(let x=0; x<4; ++x) {
             if(pecaAtual[y][x]) {
-                desenharBloco(atualX+x, atualY+y, Pecas.cores[pecaAtual[y][x] - 1], context);
+                desenharBloco(atualX+x, atualY+y, Pecas.cores[pecaAtual[y][x]-1], context);
             }
         }
     }
+}
+
+function desenharTabVazio(lin, col, context) {  // Cria uma matriz toda preta
+    // Adicionando cor e borda aos bloquinhos
+    for(let l=0; l<lin; l++) {
+        for(let c=0; c<col; c++) {
+            desenharBloco(c, l, "black", context);
+        }
+    }
+}
+
+function preencherTab(cor, context) {
+    for (let l=0; l<pecaAtual.length; l++) {
+        for (let c=0; c<pecaAtual.length; c++) {
+            if (pecaAtual[l][c]) {
+                desenharBloco(c+(Math.floor(COLUNAS / 2)-1), l+(LINHAS-1), cor, context);
+            } else {
+                desenharBloco(c, l, "black", context);
+            }
+        }
+    }
+}
+
+function rotacionar(pecaAtual) {  // Rotaciona a peça em sentido anti-horário
+    let novoAtual = [];
+    for(let y=0; y<4; ++y) {
+        novoAtual[y] = [];
+        for(let x=0; x<4; ++x) {
+            novoAtual[y][x] = pecaAtual[3-x][y];
+        }
+    }
+
+    return novoAtual;
 }
 
 function novaPeca() {  // Escolhe uma peça aleatória e define posição de spawn dela
@@ -171,18 +203,6 @@ function novaPeca() {  // Escolhe uma peça aleatória e define posição de spa
         atualX = 11;
         atualY = 0;
     }
-}
-
-function rotacionar(pecaAtual) {  // Rotaciona a peça em sentido anti-horário
-    let novoAtual = [];
-    for(let y=0; y<4; ++y) {
-        novoAtual[y] = [];
-        for(let x=0; x<4; ++x) {
-            novoAtual[y][x] = pecaAtual[3-x][y];
-        }
-    }
-
-    return novoAtual;
 }
 
 
@@ -260,8 +280,11 @@ function movimentoValido(proxX, proxY, novoAtual ) {  // Verifica se a próxima 
 function tick() {  // Mantém a peça movendo pra baixo/cima
     if(!tabuleiroInvertido) {
         if(movimentoValido(0, 1)) {
-            ++atualY;
-        } else {
+            desenharTabVazio(LINHAS, COLUNAS, context);  // Apaga o tabuleiro
+            ++atualY;  // Move a peça
+            desenharPeca();
+            // preencherTab(Pecas.cores[pecaAtual[y][x]], context);
+        } else {  // Não tem mais pra onde ir
             travarPeca();
             movimentoValido(0, 1);
             apagarLinhaPreenchida();
@@ -273,7 +296,9 @@ function tick() {  // Mantém a peça movendo pra baixo/cima
         }
     } else {
         if(movimentoValido(0, -1)) {
-            --atualY;
+            desenharTabVazio(LINHAS, COLUNAS, context);  // Apaga o tabuleiro
+            --atualY;  // Move a peça
+            desenharPeca();
         } else {
             travarPeca();
             movimentoValido(0, -1);
@@ -285,6 +310,7 @@ function tick() {  // Mantém a peça movendo pra baixo/cima
             novaPeca();
         }
     }
+    
 }
 
 function travarPeca() {  // Trava a peça no tabuleiro ao final do movimento
@@ -299,21 +325,29 @@ function travarPeca() {  // Trava a peça no tabuleiro ao final do movimento
 }
 
 function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida e apaga se estiver
-    for(let y=canvas.width-1; y>=0; --y) {
-        let linhaPreenchida = true;
-        for(let x=0; x<canvas.height; ++x) {
-            if (tabuleiro[y][x] == 0) {  // Bloco vazio
-                linhaPreenchida = false;
-                break;
+    let linhaPreenchida = false;
+    for(let l=LINHAS-1; l>=0; --l) {
+        let blocosVazios = 0;
+        for(let c=0; c<COLUNAS; c++) {
+            if(typeof tabuleiro[l][c] != 'undefined' && !tabuleiro[l][c]) {
+                blocosVazios++;
             }
         }
+        if(blocosVazios == COLUNAS) {
+            linhaPreenchida = true;
+        }
+
         if(linhaPreenchida) {
-            for(let y2=y; y2>0; --y2) {
-                for(let x=0; x<canvas.height; ++x) {
-                    tabuleiro[y2][x] = tabuleiro[y2-1][x];
+            for(let l2=l; l2>0; --l2) {
+                for(let x=0; x<COLUNAS; ++x) {
+                    tabuleiro[l2][x] = tabuleiro[l2-1][x];
                 }
             }
-            ++y;
+            ++l;
+        }
+
+        if(blocosVazios == 0) {  // Se achou alguma linha vazia, não precisa olhar além dela
+            break;
         }
     }
 }
