@@ -1,5 +1,7 @@
 /*
-Peça chega ao fim, mas o tick extra pra cair no else não executa, então não surge a próx peça
+Corrigir a rotação das peças
+
+Implementar o tetris invertido
 */
 
 const canvas = document.getElementById('tetris');
@@ -10,7 +12,7 @@ let tabuleiro = [];  // Criando o tabuleiro do Tetris
 let pecaAtual;  // Peça sendo controlada atualmente
 let atualX;
 let atualY;
-let derrota;
+let derrota;  // Bool para verificar se a partida foi perdida
 let travado;  // Bool para verificar se a peça está presa no fundo
 let tabuleiroInvertido = false;  // true => peças sobem; false => peças descem
 let intervaloTick;
@@ -41,7 +43,7 @@ let dificuldade = document.getElementById("dificuldade");
 function gerarTab() {  // Função que cria o tabuleiro
     criarMatrizTab();
 
-    desenharTabVazio(LINHAS, COLUNAS, context);
+    desenharTab(LINHAS, COLUNAS, context, "Black");
 }
 
 function criarMatrizTab() {  // Função que cria a matriz vazia do tabuleiro
@@ -113,11 +115,11 @@ const Pecas = {  // Informações sobre formato e cor das peças
         ]
     ],
     cores: [
-        "cyan", "yellow", "orange", "blue", "purple", "green", "red"
+        null, "cyan", "yellow", "orange", "blue", "purple", "green", "red"
     ]
 };
 
-function desenharBloco(col, lin, corBloco, context) {  // função pra desenhar cada bloco
+function desenharBloco(lin, col, corBloco, context) {  // função pra desenhar cada bloco
     context.fillStyle = corBloco;  // Cor da parte de dentro do bloco
     context.fillRect(col * TAMANHOBLOCO, lin * TAMANHOBLOCO, TAMANHOBLOCO, TAMANHOBLOCO);
     context.strokeStyle = "#696969"; // Cor das bordas de cada bloco
@@ -130,36 +132,30 @@ function desenharPeca() {  // Função q será chamada a cada vez que a peça de
     for(let x=0; x<COLUNAS; ++x) {
         for(let y=0; y<LINHAS; ++y) {
             if(tabuleiro[y][x] == 0) {
-                desenharBloco(x, y, "Black", context);
+                desenharBloco(y, x, "Black", context);
+            } else {
+                desenharBloco(y, x, Pecas.cores[tabuleiro[y][x]], context);
             }
         }
     }
 
+    // Faz a peça aparecer na posição seguinte
     for(let y=0; y<4; ++y) {
         for(let x=0; x<4; ++x) {
             if(pecaAtual[y][x]) {
-                desenharBloco(atualX+x, atualY+y, Pecas.cores[pecaAtual[y][x]-1], context);
+                desenharBloco(atualY+y, atualX+x, Pecas.cores[pecaAtual[y][x]], context);
             }
         }
     }
 }
 
-function desenharTabVazio(lin, col, context) {  // Cria uma matriz toda preta
-    // Adicionando cor e borda aos bloquinhos
+function desenharTab(lin, col, context, cor) {
     for(let l=0; l<lin; l++) {
         for(let c=0; c<col; c++) {
-            desenharBloco(c, l, "black", context);
-        }
-    }
-}
-
-function preencherTab(cor, context) {
-    for (let l=0; l<pecaAtual.length; l++) {
-        for (let c=0; c<pecaAtual.length; c++) {
-            if (pecaAtual[l][c]) {
-                desenharBloco(c+(Math.floor(COLUNAS / 2)-1), l+(LINHAS-1), cor, context);
+            if(cor == "Black") {  // Cor só se coloca se for Black
+                desenharBloco(l, c, cor, context);
             } else {
-                desenharBloco(c, l, "black", context);
+                desenharBloco(l, c, Pecas.cores[tabuleiro[l][c]], context);
             }
         }
     }
@@ -195,12 +191,13 @@ function novaPeca() {  // Escolhe uma peça aleatória e define posição de spa
     }
     
     travado = false;
+
     // Local onde as peças irão surgir
     if(TAMANHOBLOCO == 20) {
-        atualX = 5;
+        atualX = 4;
         atualY = 0;
     } else {
-        atualX = 11;
+        atualX = 9;
         atualY = 0;
     }
 }
@@ -223,7 +220,7 @@ function controle(event) {  // Função que atribui os movimentos das setas
         }
     } else if(event.key === "ArrowDown") {  // Seta baixo
         if(!tabuleiroInvertido) {  // Tabuleiro comum
-            while(movimentoValido(0, 1)) {  // Pra poder mover a peça até o final
+            if(movimentoValido(0, 1)) {  // Pra poder mover a peça até o final
                 ++atualY;
             }  
         } else {
@@ -234,7 +231,7 @@ function controle(event) {  // Função que atribui os movimentos das setas
         }
     } else if(event.key === "ArrowUp") {  // Seta cima
         if(tabuleiroInvertido) {  // Tabuleiro invertido
-            while(movimentoValido(0, -1)) {  // Pra poder mover a peça até o final
+            if(movimentoValido(0, -1)) {  // Pra poder mover a peça até o final
                 --atualY;
             }        
         } else {
@@ -278,15 +275,13 @@ function movimentoValido(proxX, proxY, novoAtual ) {  // Verifica se a próxima 
 }
 
 function tick() {  // Mantém a peça movendo pra baixo/cima
+    // Apaga a peça e dps aparece o console
     if(!tabuleiroInvertido) {
         if(movimentoValido(0, 1)) {
-            desenharTabVazio(LINHAS, COLUNAS, context);  // Apaga o tabuleiro
             ++atualY;  // Move a peça
-            desenharPeca();
-            // preencherTab(Pecas.cores[pecaAtual[y][x]], context);
         } else {  // Não tem mais pra onde ir
             travarPeca();
-            movimentoValido(0, 1);
+            movimentoValido(0, 1);  // Atualizar status do derrota
             apagarLinhaPreenchida();
             if(derrota) {
                 resetIntervalos();
@@ -296,9 +291,7 @@ function tick() {  // Mantém a peça movendo pra baixo/cima
         }
     } else {
         if(movimentoValido(0, -1)) {
-            desenharTabVazio(LINHAS, COLUNAS, context);  // Apaga o tabuleiro
             --atualY;  // Move a peça
-            desenharPeca();
         } else {
             travarPeca();
             movimentoValido(0, -1);
@@ -310,7 +303,6 @@ function tick() {  // Mantém a peça movendo pra baixo/cima
             novaPeca();
         }
     }
-    
 }
 
 function travarPeca() {  // Trava a peça no tabuleiro ao final do movimento
@@ -325,16 +317,13 @@ function travarPeca() {  // Trava a peça no tabuleiro ao final do movimento
 }
 
 function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida e apaga se estiver
-    let linhaPreenchida = false;
     for(let l=LINHAS-1; l>=0; --l) {
-        let blocosVazios = 0;
+        let linhaPreenchida = true;
         for(let c=0; c<COLUNAS; c++) {
-            if(typeof tabuleiro[l][c] != 'undefined' && !tabuleiro[l][c]) {
-                blocosVazios++;
+            if(typeof tabuleiro[l][c] != 'undefined' && tabuleiro[l][c] == 0) {
+                linhaPreenchida = false;
+                break;
             }
-        }
-        if(blocosVazios == COLUNAS) {
-            linhaPreenchida = true;
         }
 
         if(linhaPreenchida) {
@@ -344,10 +333,6 @@ function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida
                 }
             }
             ++l;
-        }
-
-        if(blocosVazios == 0) {  // Se achou alguma linha vazia, não precisa olhar além dela
-            break;
         }
     }
 }
@@ -360,10 +345,10 @@ function resetIntervalos(){  // Reseta os intervalos criados no jogo
 function iniciar() {
     resetIntervalos();
     intervaloDesenhoPeca = setInterval(desenharPeca, 3);
+    intervaloTick = setInterval(tick, 400);
     criarMatrizTab();
     novaPeca();
     derrota = false;
-    intervaloTick = setInterval(tick, 400);
 }
 
 function pausar() {
