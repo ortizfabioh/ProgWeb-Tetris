@@ -316,7 +316,7 @@ function tick() {  // Mantém a peça movendo pra baixo/cima
                 apagarLinhaPreenchida();
                 if(derrota) {
                     resetIntervalos();
-                    return false;
+                    gameOver();
                 }
                 novaPeca();
             }
@@ -329,7 +329,7 @@ function tick() {  // Mantém a peça movendo pra baixo/cima
                 apagarLinhaPreenchida();
                 if(derrota) {
                     resetIntervalos();
-                    return false;
+                    gameOver();
                 }
                 novaPeca();
             }
@@ -350,7 +350,6 @@ function travarPeca() {  // Trava a peça no tabuleiro ao final do movimento
 
 function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida e apaga se estiver
     let cont=0;
-    let extra=0;
     
     for(let l=LINHAS-1; l>=0; --l) {
         let linhaPreenchida = true;
@@ -375,7 +374,7 @@ function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida
 
     /* Acréscimo de pontos */
     if(cont > 0) {
-        extra = (cont * 10) * cont;
+        let extra = (cont * 10) * cont;
         pontos += extra;
         
         if(pontos >= 300*nivel) {
@@ -406,8 +405,20 @@ function relogio() {
                 minutos = "0" + minutos;
             }
         }
-    }
+    } 
 }
+    
+function gameOver() {
+    if(derrota) {
+        iniciado = false;
+        document.getElementById("parar").innerHTML = "Nova partida";
+
+        let reiniciar = confirm("Partida finalizada! Sua pontuação será salva! Deseja jogar outra partida?");
+        if(reiniciar) {
+            location.reload();
+        }
+    }
+}   
 
 function resetIntervalos(){  // Reseta os intervalos criados no jogo
     clearInterval(intervaloTick);
@@ -423,14 +434,15 @@ function iniciar() {
 
     relogio();  // Iniciar relógio
 
-    intervaloDesenhoPeca = setInterval(desenharPeca, 30);  // Tempo que leva para descer a peça
-    intervaloTick = setInterval(tick, 400);  // Tempo que leva pra travar a peça
-    novaPeca();
-
     pontos = 0;
     nivel = 1;
     linhasApagadas = 0;
     derrota = false;
+
+    intervaloDesenhoPeca = setInterval(desenharPeca, 30);  // Tempo que leva para descer a peça
+    intervaloTick = setInterval(tick, 400);  // Tempo que leva pra travar a peça
+    
+    novaPeca();
 }
 
 function pausar() {
@@ -442,17 +454,22 @@ function pausar() {
             clearTimeout(tempo);
         } else {
             pausado = false;
+            relogio();
             botao.innerHTML = "Pausar jogo";
         }
     }
 }
 
 function parar() {
-    pausado = true;
-    let pergunta = confirm("Tem certeza que deseja parar o jogo? O seu progresso não será salvo.");
-    if(pergunta) {
-        location.reload();
+    if(iniciado) {
+        pausado = true;
+        let pergunta = confirm("Tem certeza que deseja parar o jogo? O seu progresso não será salvo.");
+        if(pergunta) {
+            location.reload();
+        } else {
+            pausado = false;
+        }
     } else {
-        pausado = false;
+        location.reload();
     }
 }
