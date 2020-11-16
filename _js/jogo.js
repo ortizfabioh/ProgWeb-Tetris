@@ -1,7 +1,7 @@
 /*
-if de remover quadrados no rotacionar() não funciona
-Pensar em um tempo de intervalo bom 
+TO DO
 
+if de remover quadrados no rotacionar() não funciona
 Implementar o tetris invertido
 */
 
@@ -16,6 +16,8 @@ let atualY;
 let linhasApagadas;
 let pontos;
 let nivel;
+let velocidadeTick;
+let velocidadeDesenhoPeca;
 let derrota;  // Bool para verificar se a partida foi perdida
 let travado;  // Bool para verificar se a peça está presa no fundo
 let tabuleiroInvertido = false;  // true => peças sobem; false => peças descem
@@ -102,7 +104,7 @@ function alterarTamanho() {  // Função para alterar o tamanho do tabuleiro
 
 
 /* **************************************************************
-***** GERAR ASSETS PARA O JOGO (PEÇAS E DESENHOS DAS PEÇAS) *****
+************************ FUNÇÕES DO JOGO ************************
 ************************************************************** */
 
 const Pecas = {  // Informações sobre formato e cor das peças  
@@ -232,52 +234,6 @@ function novaPeca() {  // Escolhe uma peça aleatória e define posição de spa
     }
 }
 
-
-/* **************************************************************
-********************* MOVIMENTAÇÃO DAS PEÇAS ********************
-************************************************************** */
-
-document.addEventListener("keydown", controle);  // Espera uma tecla sem valor (setas) ser pressionada no jogo
-
-function controle(event) {  // Função que atribui os movimentos das setas
-    if(event.key === "ArrowLeft") {  // Seta esquerda
-        if(movimentoValido(-1)) {
-            --atualX;
-        }
-    } else if(event.key === "ArrowRight") {  // Seta direita
-        if(movimentoValido(1)) {
-            ++atualX;
-        }
-    } else if(event.key === "ArrowDown") {  // Seta baixo
-        if(!tabuleiroInvertido) {  // Tabuleiro comum
-            if(movimentoValido(0, 1)) {
-                ++atualY;
-            }  
-        } else {
-            var rotacionado = rotacionar(pecaAtual);
-            if(movimentoValido(0, 0, rotacionado)) {
-                pecaAtual = rotacionado;
-            }
-        }
-    } else if(event.key === "ArrowUp") {  // Seta cima
-        if(tabuleiroInvertido) {  // Tabuleiro invertido
-            if(movimentoValido(0, -1)) {
-                --atualY;
-            }
-        } else {
-            var rotacionado = rotacionar(pecaAtual);
-            if(movimentoValido(0, 0, rotacionado)) {
-                pecaAtual = rotacionado;
-            }
-        }
-    }
-}
-
-
-/* **************************************************************
-************ REGRAS DE JOGO E GERENCIAMENTO DA PARTIDA **********
-************************************************************** */
-
 function movimentoValido(proxX, proxY, novoAtual) {  // Verifica se a próxima posição da peça é válida
     // Operadores || nas variáveis significa que caso o primeiro valor seja false, o segundo valor será atribuído
     proxX = proxX || 0;
@@ -315,7 +271,7 @@ function tick() {  // Mantém a peça movendo pra baixo/cima
                 movimentoValido(0, 1);  // Atualizar status do derrota
                 apagarLinhaPreenchida();
                 if(derrota) {
-                    resetIntervalos();
+                    resetInterval();
                     gameOver();
                 }
                 novaPeca();
@@ -328,7 +284,7 @@ function tick() {  // Mantém a peça movendo pra baixo/cima
                 movimentoValido(0, -1);
                 apagarLinhaPreenchida();
                 if(derrota) {
-                    resetIntervalos();
+                    resetInterval();
                     gameOver();
                 }
                 novaPeca();
@@ -380,10 +336,9 @@ function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida
         if(pontos >= 300*nivel) {
             nivel++;
         }
+        velocidadeTick -= nivel*75;
 
-        pontuacao.innerHTML = pontos;
-        linhasEliminadas.innerHTML = linhasApagadas;
-        dificuldade.innerHTML = nivel;
+        attInfo(pontos, linhasApagadas, nivel);
     }
 }
 
@@ -407,7 +362,7 @@ function relogio() {
         }
     } 
 }
-    
+
 function gameOver() {
     if(derrota) {
         iniciado = false;
@@ -418,29 +373,72 @@ function gameOver() {
             location.reload();
         }
     }
-}   
-
-function resetIntervalos(){  // Reseta os intervalos criados no jogo
-    clearInterval(intervaloTick);
-    clearInterval(intervaloDesenhoPeca);
-    clearTimeout(tempo);
 }
+
+/* **************************************************************
+********************* MOVIMENTAÇÃO DAS PEÇAS ********************
+************************************************************** */
+
+document.addEventListener("keydown", controle);  // Espera uma tecla sem valor (setas) ser pressionada no jogo
+
+function controle(event) {  // Função que atribui os movimentos das setas
+    if(event.key === "ArrowLeft") {  // Seta esquerda
+        if(movimentoValido(-1)) {
+            --atualX;
+        }
+    } else if(event.key === "ArrowRight") {  // Seta direita
+        if(movimentoValido(1)) {
+            ++atualX;
+        }
+    } else if(event.key === "ArrowDown") {  // Seta baixo
+        if(!tabuleiroInvertido) {  // Tabuleiro comum
+            if(movimentoValido(0, 1)) {
+                ++atualY;
+            }  
+        } else {
+            var rotacionado = rotacionar(pecaAtual);
+            if(movimentoValido(0, 0, rotacionado)) {
+                pecaAtual = rotacionado;
+            }
+        }
+    } else if(event.key === "ArrowUp") {  // Seta cima
+        if(tabuleiroInvertido) {  // Tabuleiro invertido
+            if(movimentoValido(0, -1)) {
+                --atualY;
+            }
+        } else {
+            var rotacionado = rotacionar(pecaAtual);
+            if(movimentoValido(0, 0, rotacionado)) {
+                pecaAtual = rotacionado;
+            }
+        }
+    }
+}
+
+
+/* **************************************************************
+******************* GERENCIAMENTO DA PARTIDA ********************
+************************************************************** */
+
 
 function iniciar() {
     iniciado = true;
     document.getElementById("iniciar").disabled = true;  // desabilita o botão após iniciar
 
-    resetIntervalos();
+    resetInterval();
 
     relogio();  // Iniciar relógio
 
     pontos = 0;
-    nivel = 1;
+    nivel = 5;
     linhasApagadas = 0;
+    velocidadeTick = 1000;  // Velocidade inicial
     derrota = false;
 
-    intervaloDesenhoPeca = setInterval(desenharPeca, 30);  // Tempo que leva para descer a peça
-    intervaloTick = setInterval(tick, 400);  // Tempo que leva pra travar a peça
+    intervaloTick = setInterval(tick, velocidadeTick);  // Tempo que leva pra cair/subir a peça
+    intervaloDesenhoPeca = setInterval(desenharPeca, 30);  // Tempo que leva pra desenhar a peça
+    
+    attInfo(pontos, linhasApagadas, nivel);
     
     novaPeca();
 }
@@ -472,4 +470,21 @@ function parar() {
     } else {
         location.reload();
     }
+}
+
+
+/* **************************************************************
+*********************** FUNÇÕES DE AJUDA ************************
+************************************************************** */
+
+function attInfo(pontos, linhasApagadas, nivel) {
+    pontuacao.innerHTML = pontos;
+    linhasEliminadas.innerHTML = linhasApagadas;
+    dificuldade.innerHTML = nivel;
+}  
+
+function resetInterval() {
+    clearInterval(intervaloTick);
+    clearInterval(intervaloDesenhoPeca);
+    clearTimeout(tempo);
 }
