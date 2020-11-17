@@ -1,33 +1,35 @@
 /*
 TO DO
 
-if de remover quadrados no rotacionar() não funciona
-Implementar o tetris invertido
+Corrigir inversão de tabuleiro
+    Se possível, usar o while ao invés de if em apagarLinhaPreenchida()
+    Quando tabuleiroInvertido = true, as duas últimas linhas são criadas com tamanho anormal
 */
 
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext("2d");
 
-// Variáveis globais para usar no jogo
+// VARIÁVEIS GLOBAIS DO JOGO
 let tabuleiro = [];  // Criando o tabuleiro do Tetris
 let pecaAtual;  // Peça sendo controlada atualmente
-let atualX;
-let atualY;
-let linhasApagadas;
-let pontos;
-let nivel;
-let velocidadeTick;
-let velocidadeDesenhoPeca;
+let atualX;  // Coluna atual 
+let atualY;  // Linha atual
+let linhasApagadas;  // Quantidade de linhas apagadas
+let pontos;  // Quantidade de pontos
+let nivel;  // Nível atual
+let velocidadeTick;  // Velocidade de deslocamento da peça
 let derrota;  // Bool para verificar se a partida foi perdida
 let travado;  // Bool para verificar se a peça está presa no fundo
-let tabuleiroInvertido = false;  // true => peças sobem; false => peças descem
-let iniciado = false;
-let pausado = false;
-let tempo;
+let iniciado;  // Bool para verificar se o jogo foi iniciado
+let pausado;  // Bool para verificar se o jogo está pausado
+let tempo;  // Tempo de partida
 let minutos=0;
 let segundos=0;
-let intervaloTick;
-let intervaloDesenhoPeca;
+let intervaloTick;  // setInterval do tick
+let intervaloDesenhoPeca;  // setInterval do desenhoPeca
+let tabuleiroInvertido;  // true => peças sobem; false => peças descem
+let pecaEspecial;  // Bool pra verificar se a peça atual é a especial
+let quadrado;  // Bool pra verificar se a peça é a 1 ou a 6 (quadrados não rotacionam)
 
 
 // TAMANHO PADRÃO INICIAL (20x10)
@@ -39,7 +41,7 @@ COLUNAS = Math.floor(canvas.width / TAMANHOBLOCO);
 window.onload = gerarTab();  // Gerar tabuleiro ao iniciar a página
 
 
-// Variáveis dos locais de informação
+// VARIÁVEIS DOS LOCAIS DE INFORMAÇÃO
 let tempoPartida = document.getElementById("tempoPartida");
 let pontuacao = document.getElementById("pontuacao");
 let linhasEliminadas = document.getElementById("linhasEliminadas");
@@ -66,6 +68,10 @@ function gerarTab() {  // Função que cria o tabuleiro
             desenharBloco(l, c, "black", context);
         }
     }
+
+    iniciado = false;
+    pausado = false;
+    tabuleiroInvertido = false;
 }
 
 function alterarTamanho() {  // Função para alterar o tamanho do tabuleiro
@@ -188,7 +194,7 @@ function desenharPeca() {  // Função q será chamada a cada vez que a peça de
 }
 
 function rotacionar(pecaAtual) {  // Rotaciona a peça em sentido anti-horário
-    if(pecaAtual !== Pecas.formatos[1] && pecaAtual !== Pecas.formatos[6]) {  // Remover quadrados
+    if(!quadrado) {  // Remover quadrados
         var novoAtual = [];
 
         for(var y=0; y<4; ++y) {
@@ -206,8 +212,12 @@ function rotacionar(pecaAtual) {  // Rotaciona a peça em sentido anti-horário
 }
 
 function novaPeca() {  // Escolhe uma peça aleatória e define posição de spawn dela
-    let id = Math.floor(Math.random() * Pecas.formatos.length);  // Gerar um índice aleatório para pegar um formato de peça
+    // let id = Math.floor(Math.random() * Pecas.formatos.length);  // Gerar um índice aleatório para pegar um formato de peça
+    let id = 6;  // Gerar um índice aleatório para pegar um formato de peça
     let formato = Pecas.formatos[id];
+
+    quadrado = (id == 1 || id == 6) ? true : false;  // Verificação de peça quadrada
+    pecaEspecial = (id == 6) ? true : false;  // Verificação de peça especial
 
     pecaAtual = [];
     for(let y=0; y<4; ++y) {
@@ -224,14 +234,14 @@ function novaPeca() {  // Escolhe uma peça aleatória e define posição de spa
     
     travado = false;
 
-    // Local onde as peças irão surgir
-    if(TAMANHOBLOCO == 20) {
-        atualX = 4;
-        atualY = 0;
-    } else {
-        atualX = 9;
-        atualY = 0;
+    if(tabuleiroInvertido) {  // Rotacionar a peça duas vezes pra peça se mover "da mesma forma"
+        rotacionar();
+        rotacionar();
     }
+
+    // Local onde as peças irão surgir
+    atualX = (TAMANHOBLOCO == 20) ? 4 : 9;
+    atualY = (!tabuleiroInvertido) ? 0 : LINHAS;
 }
 
 function movimentoValido(proxX, proxY, novoAtual) {  // Verifica se a próxima posição da peça é válida
@@ -304,10 +314,14 @@ function travarPeca() {  // Trava a peça no tabuleiro ao final do movimento
     travado = true;
 }
 
-function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida e apaga se estiver
-    let cont=0;
+function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida e apaga se estiver / Calcula e adiciona a pontuação
+    let cont=0;  // Conta as linhas linhas preenchidas de uma vez
     
-    for(let l=LINHAS-1; l>=0; --l) {
+    /*let l = (!tabuleiroInvertido) ? LINHAS-1 : 0;
+    let condicao = (!tabuleiroInvertido) ? l>=0 : l<LINHAS-1;
+
+    console.log(condicao);
+    while(condicao) {
         let linhaPreenchida = true;
         for(let c=0; c<COLUNAS; c++) {
             if(typeof tabuleiro[l][c] != 'undefined' && tabuleiro[l][c] == 0) {
@@ -316,7 +330,7 @@ function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida
             }
         }
 
-        if(linhaPreenchida) {
+        if(linhaPreenchida) {  // Havia linha preenchida
             cont++;
             for(let l2=l; l2>0; --l2) {
                 for(let x=0; x<COLUNAS; ++x) {
@@ -325,6 +339,65 @@ function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida
             }
             ++l;
             linhasApagadas++;
+
+            if(pecaEspecial) {  // Inverter tabuleiro quando a peça especial preencher uma linha
+                tabuleiro = inverterTabuleiro(tabuleiro);
+            }
+        }
+        l += (!tabuleiroInvertido) ? -1 : 1;
+    }*/
+
+
+
+    if(!tabuleiroInvertido) {
+        for(let l=LINHAS-1; l>=0; l--) {
+            let linhaPreenchida = true;
+            for(let c=0; c<COLUNAS; c++) {
+                if(typeof tabuleiro[l][c] != 'undefined' && tabuleiro[l][c] == 0) {
+                    linhaPreenchida = false;
+                    break;
+                }
+            }
+    
+            if(linhaPreenchida) {  // Havia linha preenchida
+                cont++;
+                for(let l2=l; l2>0; --l2) {
+                    for(let x=0; x<COLUNAS; ++x) {
+                        tabuleiro[l2][x] = tabuleiro[l2-1][x];
+                    }
+                }
+                ++l;
+                linhasApagadas++;
+    
+                if(pecaEspecial) {  // Inverter tabuleiro quando a peça especial preencher uma linha
+                    tabuleiro = inverterTabuleiro(tabuleiro);
+                }
+            }
+        }
+    } else {
+        for(let l=0; l<LINHAS-1; l++) {
+            let linhaPreenchida = true;
+            for(let c=0; c<COLUNAS; c++) {
+                if(typeof tabuleiro[l][c] != 'undefined' && tabuleiro[l][c] == 0) {
+                    linhaPreenchida = false;
+                    break;
+                }
+            }
+
+            if(linhaPreenchida) {  // Havia linha preenchida
+                cont++;
+                for(let l2=l; l2>0; --l2) {
+                    for(let x=0; x<COLUNAS; ++x) {
+                        tabuleiro[l2][x] = tabuleiro[l2-1][x];
+                    }
+                }
+                ++l;
+                linhasApagadas++;
+    
+                if(pecaEspecial) {  // Inverter tabuleiro quando a peça especial preencher uma linha
+                    tabuleiro = inverterTabuleiro(tabuleiro);
+                }
+            }
         }
     }
 
@@ -340,6 +413,35 @@ function apagarLinhaPreenchida() {  // Verifica se alguma linha está preenchida
 
         attInfo(pontos, linhasApagadas, nivel);
     }
+}
+
+function inverterTabuleiro(tabuleiro) {  // Inverte o tabuleiro
+    let novoTabuleiro = [];
+    let lin=0;
+    let col=0;
+
+    // Gerando novo tabuleiro
+    for(let l=0; l<LINHAS; l++) {
+        novoTabuleiro[l] = [];
+        for(let c=0; c<COLUNAS; c++) {
+            novoTabuleiro[l][c] = 0;
+        }
+    }
+
+    for(let l=LINHAS-1; l>=0; l--) {
+        for(let c=COLUNAS-1; c>=0; c--) {
+            if(tabuleiro[l][c] != 0) {  // Ignorar blocos vazios
+                novoTabuleiro[lin][col] = tabuleiro[l][c];
+            }
+            col++;
+        }
+        lin++;
+    }
+    
+    tabuleiroInvertido = (!tabuleiroInvertido) ? true : false;
+    console.log(tabuleiroInvertido, tabuleiro, novoTabuleiro);
+
+    return novoTabuleiro;
 }
 
 function relogio() {
@@ -374,6 +476,7 @@ function gameOver() {
         }
     }
 }
+
 
 /* **************************************************************
 ********************* MOVIMENTAÇÃO DAS PEÇAS ********************
@@ -420,7 +523,6 @@ function controle(event) {  // Função que atribui os movimentos das setas
 ******************* GERENCIAMENTO DA PARTIDA ********************
 ************************************************************** */
 
-
 function iniciar() {
     iniciado = true;
     document.getElementById("iniciar").disabled = true;  // desabilita o botão após iniciar
@@ -430,7 +532,7 @@ function iniciar() {
     relogio();  // Iniciar relógio
 
     pontos = 0;
-    nivel = 5;
+    nivel = 1;
     linhasApagadas = 0;
     velocidadeTick = 1000;  // Velocidade inicial
     derrota = false;
