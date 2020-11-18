@@ -1,9 +1,3 @@
-<<<<<<< Updated upstream
-window.onload = gerarTab();
-
-function gerarTab() {
-    var tetris = document.getElementById("tetris");
-=======
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext("2d");
 
@@ -393,7 +387,6 @@ function inverterTabuleiro(tabuleiro) {  // Inverte o tabuleiro
     }
     
     // Substitui os valores dos blocos
-    let lin=0;
     for(let l=LINHAS-1; l>=0; l--) {
         let col=0;
         for(let c=COLUNAS-1; c>=0; c--) {
@@ -507,23 +500,54 @@ function iniciar() {
     intervaloDesenhoPeca = setInterval(desenharPeca, 30);  // Tempo que leva pra atualizar o tabuleiro
     
     attInfo(pontos, linhasApagadas, nivel);
->>>>>>> Stashed changes
     
-    var altura = (tetris.className == "menor") ? 20 : 44;
-    var largura = (tetris.className == "menor") ? 10 : 22;
-    var tamCelula = (tetris.className == "menor") ? "celulaMenor" : "celulaMaior";
+    novaPeca();
+}
 
-    var partida = document.createElement("div");
-    partida.setAttribute("id", "partida")
-    tetris.appendChild(partida);
-
-    for(var i=1; i<=altura; i++) {
-        for(var j=1; j<=largura; j++) {
-            var celula = document.createElement("div");
-            celula.setAttribute("class", tamCelula);
-            var id= (i).toString()+"_"+(j).toString();
-            celula.setAttribute("id", id)
-            partida.appendChild(celula);
+function pausar() {
+    let botao = document.getElementById("pausar");
+    if(iniciado) {
+        if(!pausado) {
+            pausado = true;
+            botao.innerHTML = "Continuar jogo";
+            clearTimeout(tempo);
+        } else {
+            pausado = false;
+            relogio();
+            botao.innerHTML = "Pausar jogo";
         }
     }
+}
+
+function parar() {
+    if(iniciado) {
+        pausado = true;
+        let pergunta = confirm("Tem certeza que deseja parar o jogo? O seu progresso não será salvo.");
+        if(pergunta) {
+            location.reload();
+        } else {
+            pausado = false;
+        }
+    } else {
+        if(derrota) {
+            location.reload();
+        }
+    }
+}
+
+
+/* **************************************************************
+*********************** FUNÇÕES DE AJUDA ************************
+************************************************************** */
+
+function attInfo(pontos, linhasApagadas, nivel) {  // Atualiza as informações na tela do jogo
+    pontuacao.innerHTML = pontos;
+    linhasEliminadas.innerHTML = linhasApagadas;
+    dificuldade.innerHTML = nivel;
+}  
+
+function resetInterval() {  // Reseta os intervalos criados
+    clearInterval(intervaloTick);
+    clearInterval(intervaloDesenhoPeca);
+    clearTimeout(tempo);
 }
