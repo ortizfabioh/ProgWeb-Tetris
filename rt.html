@@ -13,10 +13,9 @@
         <div class="navbar">
             <a href="rt.html"><img src="_img/logo.png" alt="Tetris" class="img"></a>
             <div class="dropdown">
-                <button class="dropbtn">Selecione o tamanho do tetris (Altura x Largura)</button>
+                <button class="dropbtn">Altere o tamanho do tetris (Altura x Largura)</button>
                 <div class="dropdown-content">
-                    <a href="#" onclick="trocarMaiorMenor()">20 x 10</a>
-                    <a href="#" onclick="trocarMenorMaior()">44 x 22</a>
+                    <a id="redimensao" href="#" onclick="alterarTamanho()">Mudar para 44 x 22</a>
                 </div>
             </div>
             
@@ -32,17 +31,17 @@
     </header>
     <div class="botoes">
         <p>
-            <button id="iniciar">Iniciar jogo</button>
+            <button id="iniciar" onclick="iniciar()">Iniciar jogo</button>
         </p>
         <p>
-            <button id="pausar">Pausar jogo</button>
+            <button id="pausar" onclick="pausar()">Pausar jogo</button>
         </p>
         <p>
-            <button id="parar">Finalizar jogo</button>
+            <button id="parar" onclick="parar()">Finalizar jogo</button>
         </p>
     </div>
     <div class="tabuleiro">
-        <div id="tetris" class="menor"></div>
+        <canvas id="tetris"></canvas>
     </div>
 
 
@@ -51,23 +50,21 @@
         <div id="tempoPartida" class="caixa"></div>
         
         <span>Pontuação:</span>
-            <div id="pontuacao" class="caixa"></div>
-            
-            <span>Linhas eliminadas:</span>
-            <div id="linhasEliminadas" class="caixa"></div>
-            
-            <span>Dificuldade:</span>
-            <div id="dificuldade" class="caixa"></div>
-            
-            <span>Ranking do jogador:<br/></span>
-            <span>(jogador - pontuação - nível - tempo)</span>
-            <div id="rankJogador" class="ranking">
-                <div id="1" class="rank">jogador - 1000000 - 10 - 90:00</div>
-                <div id="2" class="rank">jogador - 515246 - 8 - 82:35</div>
-            </div>
+        <div id="pontuacao" class="caixa"></div>
+        
+        <span>Linhas eliminadas:</span>
+        <div id="linhasEliminadas" class="caixa"></div>
+        
+        <span>Dificuldade:</span>
+        <div id="dificuldade" class="caixa"></div>
+        
+        <span>Ranking do jogador:<br/></span>
+        <span>(jogador - pontuação - nível - tempo)</span>
+        <div id="rankJogador" class="ranking">
+            <div id="1" class="rank"></div>
+        </div>
     </div>
 
     <script src="_js/jogo.js"></script>
-    <script src="_js/funcoes.js"></script>
 </body>
 </html>
