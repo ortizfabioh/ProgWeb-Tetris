@@ -18,7 +18,6 @@
                     <a id="redimensao" href="#" onclick="alterarTamanho()">Mudar para 44 x 22</a>
                 </div>
             </div>
-            
             <div class="dropdown jogador">
                 <button class="dropbtn">NomeJogador</button>
                 <div class="dropdown-content">
@@ -29,35 +28,26 @@
             </div>
         </div>
     </header>
+
     <div class="botoes">
-        <p>
-            <button id="iniciar" onclick="iniciar()">Iniciar jogo</button>
-        </p>
-        <p>
-            <button id="pausar" onclick="pausar()">Pausar jogo</button>
-        </p>
-        <p>
-            <button id="parar" onclick="parar()">Finalizar jogo</button>
-        </p>
+        <p><button id="iniciar" onclick="iniciar()">Iniciar jogo</button></p>
+        <p><button id="pausar" onclick="pausar()">Pausar jogo</button></p>
+        <p><button id="parar" onclick="parar()">Finalizar jogo</button></p>
     </div>
+
     <div class="tabuleiro">
         <canvas id="tetris"></canvas>
     </div>
 
-
     <div class="info">
         <span>Tempo de partida:</span>
         <div id="tempoPartida" class="caixa"></div>
-        
         <span>Pontuação:</span>
         <div id="pontuacao" class="caixa"></div>
-        
         <span>Linhas eliminadas:</span>
         <div id="linhasEliminadas" class="caixa"></div>
-        
         <span>Dificuldade:</span>
         <div id="dificuldade" class="caixa"></div>
-        
         <span>Ranking do jogador:<br/></span>
         <span>(jogador - pontuação - nível - tempo)</span>
         <div id="rankJogador" class="ranking">
