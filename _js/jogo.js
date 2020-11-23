@@ -71,6 +71,7 @@ function alterarTamanho() {
         LINHAS = Math.floor(canvas.height / TAMANHOBLOCO);
         COLUNAS = Math.floor(canvas.width / TAMANHOBLOCO);
 
+        tabuleiro = [];
         gerarTab();
     } else {
         pausado = true;
