@@ -1,3 +1,9 @@
+<?php
+session_start();
+if(!$_SESSION) {
+    die("<script>alert('Você não se logou em uma conta! Pare de tentar entrar pela URL'); history.back();</script>");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,23 +16,10 @@
 </head>
 <body>
     <header>
-        <div class="navbar">
-            <a href="rt.html"><img src="_img/logo.png" alt="Tetris" class="img"></a>
-            <div class="dropdown">
-                <button class="dropbtn">Altere o tamanho do tetris (Altura x Largura)</button>
-                <div class="dropdown-content">
-                    <a id="redimensao" href="#" onclick="alterarTamanho()">Mudar para 44 x 22</a>
-                </div>
-            </div>
-            <div class="dropdown jogador">
-                <button class="dropbtn">NomeJogador</button>
-                <div class="dropdown-content">
-                    <a href="ranking.html">Ranking Global</a>
-                    <a href="edicao.html">Editar Perfil</a>
-                    <a href="index.html">Log out</a>
-                </div>
-            </div>
-        </div>
+        <?php 
+            $jogador = $_SESSION["usuario"];
+            include "inc/navbar.php";
+        ?>
     </header>
 
     <div class="botoes">

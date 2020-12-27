@@ -430,6 +430,17 @@ function gameOver() {
         iniciado = false;
         document.getElementById("parar").innerHTML = "Nova partida";
 
+        let tempo = tempoPartida.innerHTML;
+
+        let xhr = new XMLHttpRequest();
+        let url = "funcoes/partida.php?pontos="+pontos+"&nivel="+nivel+"&tempo="+tempo+"&linhas="+linhasApagadas;
+        xhr.open("GET", url, true);
+        xhr.send();
+
+        xhr.onload = function() {
+            alert(xhr.responseText)
+        }
+
         let reiniciar = confirm("Partida finalizada! Sua pontuação será salva! Deseja jogar outra partida?");
         if(reiniciar) {
             location.reload();

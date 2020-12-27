@@ -11,7 +11,7 @@
     <div class="container">
         <div class="panel">
             <img src="_img/logo.png" alt="Tetris" class="center">
-            <form  method="post">
+            <form action="funcoes/cadastrar.php" method="post">
                 <h2>Tela de cadastro</h2>
                 <p>
                     <label for="nome">Nome Completo</label>
@@ -27,15 +27,14 @@
                 </p>
                 <p>
                     <label for="telefone">Telefone</label>
-                    <input type="tel" name="telefone" placeholder="(00)90000-0000"  pattern="([0-9]{2})-[0-9]{5}-[0-9]{4}" required>
+                    <input type="tel" name="telefone" placeholder="(00)90000-0000" required>
                 </p>
                 <p>
-                    <label for="usuario">Usuário (Deve ser único)</label>
+                    <label for="usuario">Usuário (Deve ser único e ter a partir de 8 caracteres)</label>
                     <input type="text" name="usuario" placeholder="uniqueUser" required>
                 </p>
-
                 <p>
-                    <label for="usuario">Email</label>
+                    <label for="email">Email</label>
                     <input type="text" name="email" placeholder="email@gmail.com" required>
                 </p>
 
@@ -49,7 +48,7 @@
                 </p>
                 <input type="submit" value="Cadastrar">
             </form>
-                <a href="index.html" class="link">Fazer Login</a>
+                <a href="index.php" class="link">Fazer Login</a>
         </div>
     </div>
 </body>

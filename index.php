@@ -11,7 +11,7 @@
     <div class="container">
         <div class="panel">
             <img src="_img/logo.png" alt="Tetris" class="center">
-            <form  method="post">
+            <form action="funcoes/logar.php" method="post">
                 <h2>Tela de login</h2>
                 <p>
                     <input type="text" name="usuario" placeholder="Usuário">
@@ -21,7 +21,7 @@
                 </p>
                 <input type="submit" value="Acessar">
             </form>
-                <a href="cadastro.html" class="link">Cadastrar-se</a>
+                <a href="cadastro.php" class="link">Cadastrar-se</a>
         </div>
     </div>
 </body>
