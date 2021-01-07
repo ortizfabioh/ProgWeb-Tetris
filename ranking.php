@@ -71,7 +71,7 @@ if(!$_SESSION) {
                             FIND_IN_SET(MAX(p.pontos), (SELECT GROUP_CONCAT(pontos ORDER BY pontos DESC) FROM partidas)) rank 
                         FROM partidas AS p 
                         INNER JOIN usuarios AS u ON p.usuarioId = u.id 
-                        WHERE p.usuarioId = 1
+                        WHERE p.usuarioId = $id
             ";
             $maxq = mysqli_query($conn, $maxs);
             $maxd = mysqli_fetch_assoc($maxq);
