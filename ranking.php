@@ -26,9 +26,6 @@ if(!$_SESSION) {
                 INNER JOIN usuarios AS u ON p.usuarioId = u.id 
                 ORDER BY pontos DESC LIMIT 10";
         $query = mysqli_query($conn, $sql);
-        $c = "SELECT COUNT(id) AS total FROM partidas";
-        $qc = mysqli_query($conn, $c);
-        $count = mysqli_fetch_assoc($qc);
         ?>
     </header>
 
@@ -65,19 +62,12 @@ if(!$_SESSION) {
                 } ?>
             </tbody>
             <?php
-            $maxs = "SELECT 
-                            MAX(p.pontos) AS maxPonto, 
-                            u.usuario, 
-                            FIND_IN_SET(MAX(p.pontos), (SELECT GROUP_CONCAT(pontos ORDER BY pontos DESC) FROM partidas)) rank 
-                        FROM partidas AS p 
-                        INNER JOIN usuarios AS u ON p.usuarioId = u.id 
-                        WHERE p.usuarioId = $id
-            ";
+            $maxs = "SELECT MAX(pontos) AS maxPonto,  
+                            FIND_IN_SET(MAX(pontos), (SELECT GROUP_CONCAT(pontos ORDER BY pontos DESC) FROM partidas)) rank 
+                        FROM partidas
+                        WHERE usuarioId = $id";
             $maxq = mysqli_query($conn, $maxs);
             $maxd = mysqli_fetch_assoc($maxq);
-            
-            $j=0;
-
             
             if(!$noTop) { ?>
             <tfoot>
@@ -86,12 +76,11 @@ if(!$_SESSION) {
                 </tr>
                 <tr>
                     <td class="player"><span style="font-weight:bold"><?php echo $maxd["rank"]; ?></span></td>
-                    <td class="player"><?php echo $maxd["usuario"]; ?></td>
+                    <td class="player"><?php echo $jogador; ?></td>
                     <td class="player"><?php echo $maxd["maxPonto"]; ?></td>
                 </tr>
             </tfoot>
             <?php } ?>
-            
         </table>
     </div>
 </body>

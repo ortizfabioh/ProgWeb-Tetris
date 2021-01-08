@@ -1,4 +1,6 @@
 <?php
+require_once "conexao/conexao.php";
+
 session_start();
 if(!$_SESSION) {
     die("<script>alert('Você não se logou em uma conta! Pare de tentar entrar pela URL'); history.back();</script>");
@@ -18,6 +20,7 @@ if(!$_SESSION) {
     <header>
         <?php 
             $jogador = $_SESSION["usuario"];
+            $id = $_SESSION["id"];
             include "inc/navbar.php";
         ?>
     </header>
@@ -44,7 +47,14 @@ if(!$_SESSION) {
         <span>Ranking do jogador:<br/></span>
         <span>(jogador - pontuação - nível - tempo)</span>
         <div id="rankJogador" class="ranking">
-            <div id="1" class="rank"></div>
+            <div class="rank">         
+                <?php
+                $sql = "SELECT pontos, nivel, tempo FROM partidas WHERE usuarioId = $id";
+                $query = mysqli_query($conn, $sql);
+                while($dados = mysqli_fetch_assoc($query)) { ?>
+                (<?php echo $jogador; ?> - <?php echo $dados["pontos"]; ?> - <?php echo $dados["nivel"]; ?> - <?php echo $dados["tempo"]; ?>)<br/>
+                <?php } ?>
+            </div>
         </div>
     </div>
 
